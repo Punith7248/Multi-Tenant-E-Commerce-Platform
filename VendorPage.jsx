@@ -1,53 +1,64 @@
 import React from "react";
+import "./VendorPage.css";
 
 const VendorPage = () => {
-  return (
-    <div>
-      <h1>Vendor Dashboard</h1>
-      <p>Welcome to the Vendor Page</p>
-    </div>
-  );
-};
+  const handleManageProducts = () => {
+    alert("Manage Products clicked");
+  };
 
-export default VendorPage;
-import React from "react";
+  const handleViewOrders = () => {
+    alert("View Orders clicked");
+  };
 
-const VendorPage = () => {
+  const handleStoreProfile = () => {
+    alert("Store Profile clicked");
+  };
+
   return (
-    <div>
-      <header>
+    <div className="vendor-page">
+
+      <header className="vendor-header">
         <h1>Vendor Dashboard</h1>
-        <p>Manage your store from one place</p>
+        <p>Manage your store, products and orders from one place.</p>
       </header>
 
       <main>
-        <section>
-          <h2>Overview</h2>
 
-          <div>
+        <section className="overview">
+          <div className="stat-card">
             <h3>Total Products</h3>
             <p>0</p>
           </div>
 
-          <div>
+          <div className="stat-card">
             <h3>Total Orders</h3>
             <p>0</p>
           </div>
 
-          <div>
+          <div className="stat-card">
             <h3>Total Sales</h3>
             <p>₹0</p>
           </div>
         </section>
 
-        <section>
+        <section className="management">
           <h2>Vendor Management</h2>
 
-          <button>Manage Products</button>
-          <button>View Orders</button>
-          <button>Store Profile</button>
+          <button onClick={handleManageProducts}>
+            Manage Products
+          </button>
+
+          <button onClick={handleViewOrders}>
+            View Orders
+          </button>
+
+          <button onClick={handleStoreProfile}>
+            Store Profile
+          </button>
         </section>
+
       </main>
+
     </div>
   );
 };
