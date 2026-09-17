@@ -1,58 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import "./VendorPage.css";
 
 const VendorPage = () => {
-  const [products, setProducts] = useState([
+  const products = [
     {
       id: 1,
-      name: "Sample Product",
-      category: "General",
-      price: 999,
-      stock: 10,
+      name: "Wireless Headphones",
+      category: "Electronics",
+      price: "₹2,499",
+      stock: 25,
     },
-  ]);
+    {
+      id: 2,
+      name: "Smart Watch",
+      category: "Electronics",
+      price: "₹3,999",
+      stock: 18,
+    },
+    {
+      id: 3,
+      name: "Cotton T-Shirt",
+      category: "Fashion",
+      price: "₹799",
+      stock: 40,
+    },
+  ];
 
-  const [showForm, setShowForm] = useState(false);
-
-  const [product, setProduct] = useState({
-    name: "",
-    category: "",
-    price: "",
-    stock: "",
-  });
-
-  const handleChange = (e) => {
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value,
-    });
+  const handleEdit = (product) => {
+    alert(`Edit product: ${product.name}`);
   };
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
-
-    const newProduct = {
-      id: products.length + 1,
-      name: product.name,
-      category: product.category,
-      price: Number(product.price),
-      stock: Number(product.stock),
-    };
-
-    setProducts([...products, newProduct]);
-
-    setProduct({
-      name: "",
-      category: "",
-      price: "",
-      stock: "",
-    });
-
-    setShowForm(false);
-  };
-
-  const handleDelete = (id) => {
-    setProducts(products.filter((item) => item.id !== id));
+  const handleDelete = (product) => {
+    alert(`Delete product: ${product.name}`);
   };
 
   return (
@@ -65,12 +44,10 @@ const VendorPage = () => {
 
       <main>
 
-        {/* Dashboard Overview */}
         <section className="overview">
-
           <div className="stat-card">
             <h3>Total Products</h3>
-            <p>{products.length}</p>
+            <p>3</p>
           </div>
 
           <div className="stat-card">
@@ -82,93 +59,66 @@ const VendorPage = () => {
             <h3>Total Sales</h3>
             <p>₹0</p>
           </div>
-
         </section>
 
-        {/* Product Management */}
-        <section className="management">
+        <section className="product-management">
+          <div className="section-header">
+            <div>
+              <h2>Product Management</h2>
+              <p>Manage your store products.</p>
+            </div>
 
-          <h2>Product Management</h2>
+            <button className="add-product">
+              + Add Product
+            </button>
+          </div>
 
-          <button onClick={() => setShowForm(!showForm)}>
-            {showForm ? "Close Form" : "Add Product"}
-          </button>
+          <div className="product-grid">
+            {products.map((product) => (
+              <div className="product-card" key={product.id}>
 
-          {/* Add Product Form */}
-          {showForm && (
-            <form onSubmit={handleAddProduct}>
+                <div className="product-icon">
+                  🛍️
+                </div>
 
-              <input
-                type="text"
-                name="name"
-                placeholder="Product Name"
-                value={product.name}
-                onChange={handleChange}
-                required
-              />
+                <h3>{product.name}</h3>
 
-              <input
-                type="text"
-                name="category"
-                placeholder="Category"
-                value={product.category}
-                onChange={handleChange}
-                required
-              />
+                <p className="category">
+                  {product.category}
+                </p>
 
-              <input
-                type="number"
-                name="price"
-                placeholder="Price"
-                value={product.price}
-                onChange={handleChange}
-                required
-              />
+                <div className="product-details">
+                  <span>Price</span>
+                  <strong>{product.price}</strong>
+                </div>
 
-              <input
-                type="number"
-                name="stock"
-                placeholder="Stock"
-                value={product.stock}
-                onChange={handleChange}
-                required
-              />
+                <div className="product-details">
+                  <span>Stock</span>
+                  <strong>{product.stock}</strong>
+                </div>
 
-              <button type="submit">
-                Save Product
-              </button>
+                <div className="product-actions">
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEdit(product)}
+                  >
+                    Edit
+                  </button>
 
-            </form>
-          )}
-
-          {/* Product List */}
-          <div>
-            <h3>Product List</h3>
-
-            {products.map((item) => (
-              <div key={item.id}>
-
-                <h4>{item.name}</h4>
-
-                <p>Category: {item.category}</p>
-
-                <p>Price: ₹{item.price}</p>
-
-                <p>Stock: {item.stock}</p>
-
-                <button onClick={() => handleDelete(item.id)}>
-                  Delete
-                </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(product)}
+                  >
+                    Delete
+                  </button>
+                </div>
 
               </div>
             ))}
-
           </div>
-
         </section>
 
       </main>
-
     </div>
   );
 };
