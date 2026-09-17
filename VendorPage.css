@@ -61,3 +61,106 @@
   background: #2563eb;
   color: white;
 }
+.product-management {
+  margin-top: 30px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-header h2 {
+  margin-bottom: 6px;
+}
+
+.section-header p {
+  color: #666;
+}
+
+.add-product {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.product-card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.product-icon {
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+
+.product-card h3 {
+  margin-bottom: 6px;
+}
+
+.category {
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.product-details {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.product-details span {
+  color: #666;
+}
+
+.product-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.product-actions button {
+  padding: 9px 14px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
