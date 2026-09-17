@@ -1,17 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import "./VendorPage.css";
 
 const VendorPage = () => {
-  const handleManageProducts = () => {
-    alert("Manage Products clicked");
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Sample Product",
+      category: "General",
+      price: 999,
+      stock: 10,
+    },
+  ]);
+
+  const [showForm, setShowForm] = useState(false);
+
+  const [product, setProduct] = useState({
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
+  });
+
+  const handleChange = (e) => {
+    setProduct({
+      ...product,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleViewOrders = () => {
-    alert("View Orders clicked");
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+
+    const newProduct = {
+      id: products.length + 1,
+      name: product.name,
+      category: product.category,
+      price: Number(product.price),
+      stock: Number(product.stock),
+    };
+
+    setProducts([...products, newProduct]);
+
+    setProduct({
+      name: "",
+      category: "",
+      price: "",
+      stock: "",
+    });
+
+    setShowForm(false);
   };
 
-  const handleStoreProfile = () => {
-    alert("Store Profile clicked");
+  const handleDelete = (id) => {
+    setProducts(products.filter((item) => item.id !== id));
   };
 
   return (
@@ -24,10 +65,12 @@ const VendorPage = () => {
 
       <main>
 
+        {/* Dashboard Overview */}
         <section className="overview">
+
           <div className="stat-card">
             <h3>Total Products</h3>
-            <p>0</p>
+            <p>{products.length}</p>
           </div>
 
           <div className="stat-card">
@@ -39,22 +82,89 @@ const VendorPage = () => {
             <h3>Total Sales</h3>
             <p>₹0</p>
           </div>
+
         </section>
 
+        {/* Product Management */}
         <section className="management">
-          <h2>Vendor Management</h2>
 
-          <button onClick={handleManageProducts}>
-            Manage Products
+          <h2>Product Management</h2>
+
+          <button onClick={() => setShowForm(!showForm)}>
+            {showForm ? "Close Form" : "Add Product"}
           </button>
 
-          <button onClick={handleViewOrders}>
-            View Orders
-          </button>
+          {/* Add Product Form */}
+          {showForm && (
+            <form onSubmit={handleAddProduct}>
 
-          <button onClick={handleStoreProfile}>
-            Store Profile
-          </button>
+              <input
+                type="text"
+                name="name"
+                placeholder="Product Name"
+                value={product.name}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="text"
+                name="category"
+                placeholder="Category"
+                value={product.category}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={product.price}
+                onChange={handleChange}
+                required
+              />
+
+              <input
+                type="number"
+                name="stock"
+                placeholder="Stock"
+                value={product.stock}
+                onChange={handleChange}
+                required
+              />
+
+              <button type="submit">
+                Save Product
+              </button>
+
+            </form>
+          )}
+
+          {/* Product List */}
+          <div>
+            <h3>Product List</h3>
+
+            {products.map((item) => (
+              <div key={item.id}>
+
+                <h4>{item.name}</h4>
+
+                <p>Category: {item.category}</p>
+
+                <p>Price: ₹{item.price}</p>
+
+                <p>Stock: {item.stock}</p>
+
+                <button onClick={() => handleDelete(item.id)}>
+                  Delete
+                </button>
+
+              </div>
+            ))}
+
+          </div>
+
         </section>
 
       </main>
