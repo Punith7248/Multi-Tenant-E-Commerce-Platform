@@ -164,3 +164,44 @@
     gap: 15px;
   }
 }
+.product-filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.product-filters input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.product-filters input:focus {
+  border-color: #2563eb;
+}
+
+.product-filters select {
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+}
+
+.no-products {
+  padding: 30px;
+  text-align: center;
+  color: #666;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .product-filters {
+    flex-direction: column;
+  }
+}
