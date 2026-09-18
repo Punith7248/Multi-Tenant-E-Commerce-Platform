@@ -4,8 +4,9 @@ import "./VendorPage.css";
 const VendorPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [showForm, setShowForm] = useState(false);
 
-  const products = [
+  const [products, setProducts] = useState([
     {
       id: 1,
       name: "Wireless Headphones",
@@ -27,7 +28,14 @@ const VendorPage = () => {
       price: "₹799",
       stock: 40,
     },
-  ];
+  ]);
+
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    category: "Electronics",
+    price: "",
+    stock: "",
+  });
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
@@ -40,12 +48,55 @@ const VendorPage = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const handleInputChange = (e) => {
+    setNewProduct({
+      ...newProduct,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAddProduct = (e) => {
+    e.preventDefault();
+
+    if (
+      !newProduct.name ||
+      !newProduct.price ||
+      !newProduct.stock
+    ) {
+      alert("Please fill all product details.");
+      return;
+    }
+
+    const product = {
+      id: Date.now(),
+      name: newProduct.name,
+      category: newProduct.category,
+      price: `₹${newProduct.price}`,
+      stock: Number(newProduct.stock),
+    };
+
+    setProducts([...products, product]);
+
+    setNewProduct({
+      name: "",
+      category: "Electronics",
+      price: "",
+      stock: "",
+    });
+
+    setShowForm(false);
+  };
+
   const handleEdit = (product) => {
     alert(`Edit product: ${product.name}`);
   };
 
   const handleDelete = (product) => {
-    alert(`Delete product: ${product.name}`);
+    const updatedProducts = products.filter(
+      (item) => item.id !== product.id
+    );
+
+    setProducts(updatedProducts);
   };
 
   return (
@@ -59,6 +110,7 @@ const VendorPage = () => {
       <main>
 
         <section className="overview">
+
           <div className="stat-card">
             <h3>Total Products</h3>
             <p>{products.length}</p>
@@ -73,19 +125,25 @@ const VendorPage = () => {
             <h3>Total Sales</h3>
             <p>₹0</p>
           </div>
+
         </section>
 
         <section className="product-management">
 
           <div className="section-header">
+
             <div>
               <h2>Product Management</h2>
               <p>Search and manage your store products.</p>
             </div>
 
-            <button className="add-product">
+            <button
+              className="add-product"
+              onClick={() => setShowForm(true)}
+            >
               + Add Product
             </button>
+
           </div>
 
           <div className="product-filters">
@@ -112,6 +170,7 @@ const VendorPage = () => {
 
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
+
                 <div className="product-card" key={product.id}>
 
                   <div className="product-icon">
@@ -153,6 +212,7 @@ const VendorPage = () => {
                   </div>
 
                 </div>
+
               ))
             ) : (
               <p className="no-products">
@@ -165,6 +225,89 @@ const VendorPage = () => {
         </section>
 
       </main>
+
+      {showForm && (
+        <div className="modal-overlay">
+
+          <div className="product-form">
+
+            <h2>Add New Product</h2>
+            <p>Enter the details of your new product.</p>
+
+            <form onSubmit={handleAddProduct}>
+
+              <label>Product Name</label>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter product name"
+                value={newProduct.name}
+                onChange={handleInputChange}
+              />
+
+              <label>Category</label>
+
+              <select
+                name="category"
+                value={newProduct.category}
+                onChange={handleInputChange}
+              >
+                <option value="Electronics">
+                  Electronics
+                </option>
+
+                <option value="Fashion">
+                  Fashion
+                </option>
+              </select>
+
+              <label>Price</label>
+
+              <input
+                type="number"
+                name="price"
+                placeholder="Enter price"
+                value={newProduct.price}
+                onChange={handleInputChange}
+              />
+
+              <label>Stock</label>
+
+              <input
+                type="number"
+                name="stock"
+                placeholder="Enter stock quantity"
+                value={newProduct.stock}
+                onChange={handleInputChange}
+              />
+
+              <div className="form-actions">
+
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={() => setShowForm(false)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  className="save-btn"
+                >
+                  Add Product
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 };
