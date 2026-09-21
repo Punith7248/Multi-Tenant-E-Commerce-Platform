@@ -4,7 +4,6 @@ import "./VendorPage.css";
 const VendorPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [showForm, setShowForm] = useState(false);
 
   const [products, setProducts] = useState([
     {
@@ -30,7 +29,10 @@ const VendorPage = () => {
     },
   ]);
 
-  const [newProduct, setNewProduct] = useState({
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  const [productForm, setProductForm] = useState({
     name: "",
     category: "Electronics",
     price: "",
@@ -49,46 +51,89 @@ const VendorPage = () => {
   });
 
   const handleInputChange = (e) => {
-    setNewProduct({
-      ...newProduct,
+    setProductForm({
+      ...productForm,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
+  const openAddForm = () => {
+    setEditingProduct(null);
 
-    if (
-      !newProduct.name ||
-      !newProduct.price ||
-      !newProduct.stock
-    ) {
-      alert("Please fill all product details.");
-      return;
-    }
-
-    const product = {
-      id: Date.now(),
-      name: newProduct.name,
-      category: newProduct.category,
-      price: `₹${newProduct.price}`,
-      stock: Number(newProduct.stock),
-    };
-
-    setProducts([...products, product]);
-
-    setNewProduct({
+    setProductForm({
       name: "",
       category: "Electronics",
       price: "",
       stock: "",
     });
 
-    setShowForm(false);
+    setShowForm(true);
   };
 
-  const handleEdit = (product) => {
-    alert(`Edit product: ${product.name}`);
+  const openEditForm = (product) => {
+    setEditingProduct(product);
+
+    setProductForm({
+      name: product.name,
+      category: product.category,
+      price: product.price.replace("₹", "").replace(",", ""),
+      stock: product.stock,
+    });
+
+    setShowForm(true);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (
+      !productForm.name ||
+      !productForm.price ||
+      !productForm.stock
+    ) {
+      alert("Please fill all product details.");
+      return;
+    }
+
+    if (editingProduct) {
+      const updatedProducts = products.map((product) =>
+        product.id === editingProduct.id
+          ? {
+              ...product,
+              name: productForm.name,
+              category: productForm.category,
+              price: `₹${productForm.price}`,
+              stock: Number(productForm.stock),
+            }
+          : product
+      );
+
+      setProducts(updatedProducts);
+    } else {
+      const newProduct = {
+        id: Date.now(),
+        name: productForm.name,
+        category: productForm.category,
+        price: `₹${productForm.price}`,
+        stock: Number(productForm.stock),
+      };
+
+      setProducts([...products, newProduct]);
+    }
+
+    closeForm();
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+    setEditingProduct(null);
+
+    setProductForm({
+      name: "",
+      category: "Electronics",
+      price: "",
+      stock: "",
+    });
   };
 
   const handleDelete = (product) => {
@@ -104,7 +149,9 @@ const VendorPage = () => {
 
       <header className="vendor-header">
         <h1>Vendor Dashboard</h1>
-        <p>Manage your store, products and orders from one place.</p>
+        <p>
+          Manage your store, products and orders from one place.
+        </p>
       </header>
 
       <main>
@@ -134,12 +181,14 @@ const VendorPage = () => {
 
             <div>
               <h2>Product Management</h2>
-              <p>Search and manage your store products.</p>
+              <p>
+                Search and manage your store products.
+              </p>
             </div>
 
             <button
               className="add-product"
-              onClick={() => setShowForm(true)}
+              onClick={openAddForm}
             >
               + Add Product
             </button>
@@ -160,8 +209,12 @@ const VendorPage = () => {
               onChange={(e) => setCategory(e.target.value)}
             >
               <option value="All">All Categories</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
+              <option value="Electronics">
+                Electronics
+              </option>
+              <option value="Fashion">
+                Fashion
+              </option>
             </select>
 
           </div>
@@ -171,7 +224,10 @@ const VendorPage = () => {
             {filteredProducts.length > 0 ? (
               filteredProducts.map((product) => (
 
-                <div className="product-card" key={product.id}>
+                <div
+                  className="product-card"
+                  key={product.id}
+                >
 
                   <div className="product-icon">
                     🛍️
@@ -197,7 +253,7 @@ const VendorPage = () => {
 
                     <button
                       className="edit-btn"
-                      onClick={() => handleEdit(product)}
+                      onClick={() => openEditForm(product)}
                     >
                       Edit
                     </button>
@@ -231,10 +287,19 @@ const VendorPage = () => {
 
           <div className="product-form">
 
-            <h2>Add New Product</h2>
-            <p>Enter the details of your new product.</p>
+            <h2>
+              {editingProduct
+                ? "Edit Product"
+                : "Add New Product"}
+            </h2>
 
-            <form onSubmit={handleAddProduct}>
+            <p>
+              {editingProduct
+                ? "Update your product details."
+                : "Enter the details of your new product."}
+            </p>
+
+            <form onSubmit={handleSubmit}>
 
               <label>Product Name</label>
 
@@ -242,7 +307,7 @@ const VendorPage = () => {
                 type="text"
                 name="name"
                 placeholder="Enter product name"
-                value={newProduct.name}
+                value={productForm.name}
                 onChange={handleInputChange}
               />
 
@@ -250,7 +315,7 @@ const VendorPage = () => {
 
               <select
                 name="category"
-                value={newProduct.category}
+                value={productForm.category}
                 onChange={handleInputChange}
               >
                 <option value="Electronics">
@@ -268,7 +333,7 @@ const VendorPage = () => {
                 type="number"
                 name="price"
                 placeholder="Enter price"
-                value={newProduct.price}
+                value={productForm.price}
                 onChange={handleInputChange}
               />
 
@@ -278,7 +343,7 @@ const VendorPage = () => {
                 type="number"
                 name="stock"
                 placeholder="Enter stock quantity"
-                value={newProduct.stock}
+                value={productForm.stock}
                 onChange={handleInputChange}
               />
 
@@ -287,7 +352,7 @@ const VendorPage = () => {
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() => setShowForm(false)}
+                  onClick={closeForm}
                 >
                   Cancel
                 </button>
@@ -296,7 +361,9 @@ const VendorPage = () => {
                   type="submit"
                   className="save-btn"
                 >
-                  Add Product
+                  {editingProduct
+                    ? "Save Changes"
+                    : "Add Product"}
                 </button>
 
               </div>
