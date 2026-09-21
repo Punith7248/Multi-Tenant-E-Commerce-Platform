@@ -21,7 +21,7 @@ const VendorPage = () => {
       name: "Smart Watch",
       category: "Electronics",
       price: "₹3,999",
-      stock: 18,
+      stock: 8,
     },
     {
       id: 3,
@@ -29,6 +29,13 @@ const VendorPage = () => {
       category: "Fashion",
       price: "₹799",
       stock: 40,
+    },
+    {
+      id: 4,
+      name: "Running Shoes",
+      category: "Fashion",
+      price: "₹1,999",
+      stock: 0,
     },
   ]);
 
@@ -49,6 +56,27 @@ const VendorPage = () => {
 
     return matchesSearch && matchesCategory;
   });
+
+  const getStockStatus = (stock) => {
+    if (stock === 0) {
+      return {
+        label: "Out of Stock",
+        className: "out-of-stock",
+      };
+    }
+
+    if (stock <= 10) {
+      return {
+        label: "Low Stock",
+        className: "low-stock",
+      };
+    }
+
+    return {
+      label: "In Stock",
+      className: "in-stock",
+    };
+  };
 
   const handleInputChange = (e) => {
     setProductForm({
@@ -89,9 +117,14 @@ const VendorPage = () => {
     if (
       !productForm.name ||
       !productForm.price ||
-      !productForm.stock
+      productForm.stock === ""
     ) {
       alert("Please fill all product details.");
+      return;
+    }
+
+    if (Number(productForm.stock) < 0) {
+      alert("Stock cannot be negative.");
       return;
     }
 
@@ -157,7 +190,6 @@ const VendorPage = () => {
   return (
     <div className="vendor-page">
 
-      {/* Header */}
       <header className="vendor-header">
         <h1>Vendor Dashboard</h1>
 
@@ -168,7 +200,6 @@ const VendorPage = () => {
 
       <main>
 
-        {/* Dashboard Overview */}
         <section className="overview">
 
           <div className="stat-card">
@@ -188,7 +219,6 @@ const VendorPage = () => {
 
         </section>
 
-        {/* Product Management */}
         <section className="product-management">
 
           <div className="section-header">
@@ -210,7 +240,6 @@ const VendorPage = () => {
 
           </div>
 
-          {/* Search and Filter */}
           <div className="product-filters">
 
             <input
@@ -239,69 +268,97 @@ const VendorPage = () => {
 
           </div>
 
-          {/* Product Cards */}
           <div className="product-grid">
 
             {filteredProducts.length > 0 ? (
 
-              filteredProducts.map((product) => (
+              filteredProducts.map((product) => {
 
-                <div
-                  className="product-card"
-                  key={product.id}
-                >
+                const stockStatus = getStockStatus(
+                  product.stock
+                );
 
-                  <div className="product-icon">
-                    🛍️
-                  </div>
+                return (
+                  <div
+                    className="product-card"
+                    key={product.id}
+                  >
 
-                  <h3>{product.name}</h3>
+                    <div className="product-icon">
+                      🛍️
+                    </div>
 
-                  <p className="category">
-                    {product.category}
-                  </p>
+                    <h3>{product.name}</h3>
 
-                  <div className="product-details">
-                    <span>Price</span>
+                    <p className="category">
+                      {product.category}
+                    </p>
 
-                    <strong>
-                      {product.price}
-                    </strong>
-                  </div>
+                    <div className="product-details">
+                      <span>Price</span>
 
-                  <div className="product-details">
-                    <span>Stock</span>
+                      <strong>
+                        {product.price}
+                      </strong>
+                    </div>
 
-                    <strong>
-                      {product.stock}
-                    </strong>
-                  </div>
+                    <div className="product-details">
+                      <span>Stock</span>
 
-                  <div className="product-actions">
+                      <strong>
+                        {product.stock}
+                      </strong>
+                    </div>
 
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        openEditForm(product)
-                      }
+                    <div
+                      className={`stock-status ${stockStatus.className}`}
                     >
-                      Edit
-                    </button>
+                      {stockStatus.label}
+                    </div>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        handleDelete(product)
-                      }
-                    >
-                      Delete
-                    </button>
+                    {product.stock > 0 &&
+                      product.stock <= 10 && (
+                        <p className="stock-warning">
+                          ⚠️ Only {product.stock}{" "}
+                          item
+                          {product.stock > 1
+                            ? "s"
+                            : ""}{" "}
+                          left
+                        </p>
+                      )}
+
+                    {product.stock === 0 && (
+                      <p className="stock-warning">
+                        ⚠️ Product is unavailable
+                      </p>
+                    )}
+
+                    <div className="product-actions">
+
+                      <button
+                        className="edit-btn"
+                        onClick={() =>
+                          openEditForm(product)
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() =>
+                          handleDelete(product)
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </div>
 
                   </div>
-
-                </div>
-
-              ))
+                );
+              })
 
             ) : (
 
@@ -317,7 +374,6 @@ const VendorPage = () => {
 
       </main>
 
-      {/* Add / Edit Product Modal */}
       {showForm && (
 
         <div className="modal-overlay">
@@ -376,6 +432,7 @@ const VendorPage = () => {
                 type="number"
                 name="price"
                 placeholder="Enter price"
+                min="0"
                 value={productForm.price}
                 onChange={handleInputChange}
               />
@@ -388,6 +445,7 @@ const VendorPage = () => {
                 type="number"
                 name="stock"
                 placeholder="Enter stock quantity"
+                min="0"
                 value={productForm.stock}
                 onChange={handleInputChange}
               />
@@ -421,7 +479,6 @@ const VendorPage = () => {
 
       )}
 
-      {/* Delete Confirmation Modal */}
       {deleteProduct && (
 
         <div className="modal-overlay">
