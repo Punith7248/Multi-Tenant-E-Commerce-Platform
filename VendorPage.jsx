@@ -4,6 +4,9 @@ import "./VendorPage.css";
 const VendorPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [stockFilter, setStockFilter] = useState("All");
+  const [sortBy, setSortBy] = useState("Default");
+
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
@@ -46,17 +49,6 @@ const VendorPage = () => {
     stock: "",
   });
 
-  const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    const matchesCategory =
-      category === "All" || product.category === category;
-
-    return matchesSearch && matchesCategory;
-  });
-
   const getStockStatus = (stock) => {
     if (stock === 0) {
       return {
@@ -77,6 +69,65 @@ const VendorPage = () => {
       className: "in-stock",
     };
   };
+
+  const filteredProducts = products
+    .filter((product) => {
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      const matchesCategory =
+        category === "All" ||
+        product.category === category;
+
+      const matchesStock =
+        stockFilter === "All" ||
+        (stockFilter === "In Stock" && product.stock > 10) ||
+        (stockFilter === "Low Stock" &&
+          product.stock > 0 &&
+          product.stock <= 10) ||
+        (stockFilter === "Out of Stock" &&
+          product.stock === 0);
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesStock
+      );
+    })
+    .sort((a, b) => {
+      if (sortBy === "Name A-Z") {
+        return a.name.localeCompare(b.name);
+      }
+
+      if (sortBy === "Name Z-A") {
+        return b.name.localeCompare(a.name);
+      }
+
+      if (sortBy === "Price Low-High") {
+        return (
+          Number(a.price.replace(/[₹,]/g, "")) -
+          Number(b.price.replace(/[₹,]/g, ""))
+        );
+      }
+
+      if (sortBy === "Price High-Low") {
+        return (
+          Number(b.price.replace(/[₹,]/g, "")) -
+          Number(a.price.replace(/[₹,]/g, ""))
+        );
+      }
+
+      if (sortBy === "Stock Low-High") {
+        return a.stock - b.stock;
+      }
+
+      if (sortBy === "Stock High-Low") {
+        return b.stock - a.stock;
+      }
+
+      return 0;
+    });
 
   const handleInputChange = (e) => {
     setProductForm({
@@ -104,7 +155,9 @@ const VendorPage = () => {
     setProductForm({
       name: product.name,
       category: product.category,
-      price: product.price.replace("₹", "").replace(",", ""),
+      price: product.price
+        .replace("₹", "")
+        .replace(",", ""),
       stock: product.stock,
     });
 
@@ -125,6 +178,11 @@ const VendorPage = () => {
 
     if (Number(productForm.stock) < 0) {
       alert("Stock cannot be negative.");
+      return;
+    }
+
+    if (Number(productForm.price) < 0) {
+      alert("Price cannot be negative.");
       return;
     }
 
@@ -227,7 +285,7 @@ const VendorPage = () => {
               <h2>Product Management</h2>
 
               <p>
-                Search and manage your store products.
+                Search, filter and sort your store products.
               </p>
             </div>
 
@@ -246,12 +304,16 @@ const VendorPage = () => {
               type="text"
               placeholder="Search products..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
             />
 
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) =>
+                setCategory(e.target.value)
+              }
             >
               <option value="All">
                 All Categories
@@ -266,6 +328,64 @@ const VendorPage = () => {
               </option>
             </select>
 
+            <select
+              value={stockFilter}
+              onChange={(e) =>
+                setStockFilter(e.target.value)
+              }
+            >
+              <option value="All">
+                All Stock
+              </option>
+
+              <option value="In Stock">
+                In Stock
+              </option>
+
+              <option value="Low Stock">
+                Low Stock
+              </option>
+
+              <option value="Out of Stock">
+                Out of Stock
+              </option>
+            </select>
+
+            <select
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(e.target.value)
+              }
+            >
+              <option value="Default">
+                Sort By
+              </option>
+
+              <option value="Name A-Z">
+                Name A-Z
+              </option>
+
+              <option value="Name Z-A">
+                Name Z-A
+              </option>
+
+              <option value="Price Low-High">
+                Price Low-High
+              </option>
+
+              <option value="Price High-Low">
+                Price High-Low
+              </option>
+
+              <option value="Stock Low-High">
+                Stock Low-High
+              </option>
+
+              <option value="Stock High-Low">
+                Stock High-Low
+              </option>
+            </select>
+
           </div>
 
           <div className="product-grid">
@@ -274,9 +394,8 @@ const VendorPage = () => {
 
               filteredProducts.map((product) => {
 
-                const stockStatus = getStockStatus(
-                  product.stock
-                );
+                const stockStatus =
+                  getStockStatus(product.stock);
 
                 return (
                   <div
