@@ -4,6 +4,9 @@ import "./VendorPage.css";
 const VendorPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [deleteProduct, setDeleteProduct] = useState(null);
 
   const [products, setProducts] = useState([
     {
@@ -28,9 +31,6 @@ const VendorPage = () => {
       stock: 40,
     },
   ]);
-
-  const [showForm, setShowForm] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null);
 
   const [productForm, setProductForm] = useState({
     name: "",
@@ -137,18 +137,30 @@ const VendorPage = () => {
   };
 
   const handleDelete = (product) => {
-    const updatedProducts = products.filter(
-      (item) => item.id !== product.id
+    setDeleteProduct(product);
+  };
+
+  const confirmDelete = () => {
+    setProducts(
+      products.filter(
+        (item) => item.id !== deleteProduct.id
+      )
     );
 
-    setProducts(updatedProducts);
+    setDeleteProduct(null);
+  };
+
+  const cancelDelete = () => {
+    setDeleteProduct(null);
   };
 
   return (
     <div className="vendor-page">
 
+      {/* Header */}
       <header className="vendor-header">
         <h1>Vendor Dashboard</h1>
+
         <p>
           Manage your store, products and orders from one place.
         </p>
@@ -156,6 +168,7 @@ const VendorPage = () => {
 
       <main>
 
+        {/* Dashboard Overview */}
         <section className="overview">
 
           <div className="stat-card">
@@ -175,12 +188,14 @@ const VendorPage = () => {
 
         </section>
 
+        {/* Product Management */}
         <section className="product-management">
 
           <div className="section-header">
 
             <div>
               <h2>Product Management</h2>
+
               <p>
                 Search and manage your store products.
               </p>
@@ -195,6 +210,7 @@ const VendorPage = () => {
 
           </div>
 
+          {/* Search and Filter */}
           <div className="product-filters">
 
             <input
@@ -208,10 +224,14 @@ const VendorPage = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-              <option value="All">All Categories</option>
+              <option value="All">
+                All Categories
+              </option>
+
               <option value="Electronics">
                 Electronics
               </option>
+
               <option value="Fashion">
                 Fashion
               </option>
@@ -219,9 +239,11 @@ const VendorPage = () => {
 
           </div>
 
+          {/* Product Cards */}
           <div className="product-grid">
 
             {filteredProducts.length > 0 ? (
+
               filteredProducts.map((product) => (
 
                 <div
@@ -241,26 +263,36 @@ const VendorPage = () => {
 
                   <div className="product-details">
                     <span>Price</span>
-                    <strong>{product.price}</strong>
+
+                    <strong>
+                      {product.price}
+                    </strong>
                   </div>
 
                   <div className="product-details">
                     <span>Stock</span>
-                    <strong>{product.stock}</strong>
+
+                    <strong>
+                      {product.stock}
+                    </strong>
                   </div>
 
                   <div className="product-actions">
 
                     <button
                       className="edit-btn"
-                      onClick={() => openEditForm(product)}
+                      onClick={() =>
+                        openEditForm(product)
+                      }
                     >
                       Edit
                     </button>
 
                     <button
                       className="delete-btn"
-                      onClick={() => handleDelete(product)}
+                      onClick={() =>
+                        handleDelete(product)
+                      }
                     >
                       Delete
                     </button>
@@ -270,10 +302,13 @@ const VendorPage = () => {
                 </div>
 
               ))
+
             ) : (
+
               <p className="no-products">
                 No products found.
               </p>
+
             )}
 
           </div>
@@ -282,7 +317,9 @@ const VendorPage = () => {
 
       </main>
 
+      {/* Add / Edit Product Modal */}
       {showForm && (
+
         <div className="modal-overlay">
 
           <div className="product-form">
@@ -301,7 +338,9 @@ const VendorPage = () => {
 
             <form onSubmit={handleSubmit}>
 
-              <label>Product Name</label>
+              <label>
+                Product Name
+              </label>
 
               <input
                 type="text"
@@ -311,7 +350,9 @@ const VendorPage = () => {
                 onChange={handleInputChange}
               />
 
-              <label>Category</label>
+              <label>
+                Category
+              </label>
 
               <select
                 name="category"
@@ -327,7 +368,9 @@ const VendorPage = () => {
                 </option>
               </select>
 
-              <label>Price</label>
+              <label>
+                Price
+              </label>
 
               <input
                 type="number"
@@ -337,7 +380,9 @@ const VendorPage = () => {
                 onChange={handleInputChange}
               />
 
-              <label>Stock</label>
+              <label>
+                Stock
+              </label>
 
               <input
                 type="number"
@@ -373,6 +418,52 @@ const VendorPage = () => {
           </div>
 
         </div>
+
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteProduct && (
+
+        <div className="modal-overlay">
+
+          <div className="product-form">
+
+            <h2>
+              Delete Product?
+            </h2>
+
+            <p>
+              Are you sure you want to delete{" "}
+              <strong>
+                {deleteProduct.name}
+              </strong>
+              ?
+            </p>
+
+            <div className="form-actions">
+
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={cancelDelete}
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="delete-confirm-btn"
+                onClick={confirmDelete}
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
       )}
 
     </div>
