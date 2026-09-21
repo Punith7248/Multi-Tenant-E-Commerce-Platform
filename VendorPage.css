@@ -279,7 +279,23 @@
 
 .cancel-btn {
   background: #e5e7eb;
-  color: #333;
+  color:#333;
+}
+.edit-btn:hover,
+.delete-btn:hover,
+.add-product:hover,
+.save-btn:hover,
+.cancel-btn:hover {
+  opacity: 0.85;
+}
+
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
 .save-btn {
