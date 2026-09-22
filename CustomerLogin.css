@@ -1,0 +1,898 @@
+.customer-login-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  background: #ffffff;
+}
+
+/* LEFT PANEL */
+
+.customer-login-left {
+  /* position: relative;
+  min-height: 100vh;
+  padding: 76px 60px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; */
+   background:
+    linear-gradient(rgba(91, 67, 48, 0.18), rgba(48, 35, 25, 0.35)),
+    url("https://images.unsplash.com/photo-1607082349566-187cde7b6b9b?auto=format&fit=crop&w=900&q=85")
+      center / cover no-repeat;
+}
+
+.customer-login-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 232, 216, 0.25),
+    rgba(43, 31, 23, 0.2)
+  );
+  pointer-events: none;
+}
+
+.left-copy,
+.left-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.left-copy {
+  color: #111027;
+}
+
+.left-copy h1 {
+  margin: 0;
+  font-size: clamp(32px, 3.1vw, 49px);
+  line-height: 1.18;
+  letter-spacing: -1.5px;
+  font-weight: 700;
+}
+
+.left-line {
+  width: 25px;
+  height: 2px;
+  margin: 24px 0 18px;
+  background: #111027;
+}
+
+.left-copy p,
+.left-bottom p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.left-bottom {
+  color: #ffffff;
+}
+
+.left-bottom .left-line {
+  margin: 12px 0 0;
+  background: #ffffff;
+}
+
+/* RIGHT PANEL */
+
+.customer-login-right {
+  min-height: 100vh;
+  padding: 28px 5.5%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.novacart-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #10102c;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.logo-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 23px;
+  border-radius: 4px;
+  background: #5744df;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.login-header p {
+  margin: 0;
+  color: #111027;
+  font-size: 11px;
+}
+
+.login-header a {
+  margin-left: 6px;
+  color: #5744df;
+  text-decoration: underline;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+}
+
+.login-content h2 {
+  margin: 0;
+  color: #10102c;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  font-weight: 700;
+}
+
+.welcome-text {
+  margin: 7px 0 20px;
+  color: #77758b;
+  font-size: 13px;
+}
+
+/* FORM */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-box {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 11px;
+  border: 1px solid #dedde7;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.input-box > span {
+  color: #36345e;
+  font-size: 15px;
+}
+
+.input-box input {
+  min-width: 0;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: #22213d;
+  font-size: 11px;
+  background: transparent;
+}
+
+.input-box input::placeholder {
+  color: #9b99a9;
+}
+
+.password-button {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: #36345e;
+  font-size: 14px;
+}
+
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 1px 0 5px;
+  font-size: 11px;
+}
+
+.form-options label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #55536d;
+}
+
+.form-options input {
+  width: 14px;
+  height: 14px;
+  accent-color: #5744df;
+}
+
+.form-options a {
+  color: #5744df;
+  text-decoration: underline;
+}
+
+.login-button {
+  height: 38px;
+  border: none;
+  border-radius: 6px;
+  background: #5744df;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.login-button span {
+  margin-left: 5px;
+  font-size: 15px;
+}
+
+/* SOCIAL LOGIN */
+
+.continue-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 17px 0 13px;
+  color: #858397;
+  font-size: 11px;
+  text-align: center;
+}
+
+.continue-divider::before,
+.continue-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #e7e5ed;
+}
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.social-buttons button {
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #dedde7;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #19182d;
+  font-size: 12px;
+}
+
+.google-symbol {
+  color: #4285f4;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.apple-symbol {
+  color: #000000;
+  font-size: 15px;
+}
+
+/* SIGNUP CARD */
+
+.signup-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f2f0ff;
+}
+
+.gift-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #e3dfff;
+  font-size: 21px;
+}
+
+.signup-text {
+  min-width: 0;
+}
+
+.signup-text strong {
+  display: block;
+  color: #191735;
+  font-size: 12px;
+}
+
+.signup-text p {
+  margin: 4px 0 0;
+  color: #686580;
+  font-size: 11px;
+}
+
+.signup-arrow {
+  margin-left: auto;
+  color: #5744df;
+  font-size: 19px;
+}
+
+/* FINAL LOGIN PANEL ADJUSTMENTS */
+
+.customer-login-right {
+  padding: 28px 7.5% 24px;
+  background: #ffffff;
+}
+
+.login-header {
+  width: 100%;
+  align-items: center;
+}
+
+.novacart-logo {
+  gap: 8px;
+  font-size: 20px;
+  letter-spacing: -0.7px;
+}
+
+.logo-symbol {
+  width: 20px;
+  height: 22px;
+  border-radius: 4px;
+  background: #5b45df;
+  font-size: 13px;
+}
+
+.login-header p {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.login-header a {
+  color: #5140c9;
+  font-weight: 500;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+}
+
+.login-content h2 {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.9px;
+  color: #10102d;
+}
+
+.welcome-text {
+  margin-top: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #858296;
+}
+
+.input-box {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #dedce8;
+  border-radius: 6px;
+}
+
+.input-box input {
+  font-size: 11px;
+}
+
+.form-options {
+  margin-top: 1px;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.login-button {
+  height: 38px;
+  border-radius: 6px;
+  background: #5744df;
+  font-size: 12px;
+}
+
+.continue-divider {
+  margin-top: 18px;
+  margin-bottom: 13px;
+  font-size: 11px;
+}
+
+.social-buttons button {
+  height: 37px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.signup-card {
+  min-height: 64px;
+  margin-top: 18px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: #f3f1ff;
+}
+
+.gift-box {
+  width: 40px;
+  height: 40px;
+  background: #e5e0ff;
+  border-radius: 8px;
+}
+
+.signup-text strong {
+  font-size: 12px;
+}
+
+.signup-text p {
+  margin-top: 3px;
+  font-size: 11px;
+}
+
+.signup-arrow {
+  font-size: 18px;
+}
+
+.logo-image {
+  display: block;
+  width: 125px;
+  height: auto;
+  object-fit: contain;
+}
+/* FINAL NOVACART LAYOUT FIX */
+
+.customer-login-page {
+  grid-template-columns: 40% 60%;
+  gap: 0;
+}
+
+/* Left panel */
+.customer-login-left {
+  min-width: 0;
+}
+
+/* Right panel */
+.customer-login-right {
+  min-width: 0;
+  padding: 32px 56px;
+}
+
+/* Logo and NovaCart name */
+.novacart-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-image {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.logo-name {
+  color: #11112f;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* Header */
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Login content */
+.login-content {
+  width: 100%;
+  max-width: 520px;
+  margin: 42px 0 0;
+}
+
+/* Keep form width controlled */
+.login-form,
+.social-buttons,
+.signup-card {
+  width: 100%;
+}
+
+/* FINAL SPACING FIX */
+
+.customer-login-right {
+  min-height: 100vh;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.login-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.novacart-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-image {
+  width: 72px;
+  height: 72px;
+  display: block;
+  object-fit: contain;
+}
+
+.logo-name {
+  color: #11112f;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+}
+
+.login-content {
+  width: 100%;
+  max-width: 430px;
+  margin: 55px 0 0 145px;
+}
+
+/* Prevent extra spacing */
+.login-content h2 {
+  margin-top: 0;
+}
+
+.login-form,
+.social-buttons,
+.signup-card {
+  width: 100%;
+}
+
+/* Desktop spacing */
+@media (min-width: 901px) {
+  .customer-login-right {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  .login-content {
+    margin-left: 145px;
+  }
+}
+
+/* Smaller desktop/tablet */
+@media (max-width: 1200px) and (min-width: 901px) {
+  .login-content {
+    margin-left: 45px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .customer-login-right {
+    min-height: auto;
+    padding: 32px 24px;
+  }
+
+  .login-content {
+    max-width: 100%;
+    margin: 45px 0 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+  .customer-login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-login-left {
+    min-height: 420px;
+  }
+
+  .customer-login-right {
+    padding: 32px 24px;
+  }
+
+  .login-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .login-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .logo-image {
+    width: 62px;
+    height: 62px;
+  }
+
+  .logo-name {
+    font-size: 24px;
+  }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .customer-login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-login-left {
+    min-height: 430px;
+    padding: 45px 35px 30px;
+  }
+
+  .customer-login-right {
+    min-height: auto;
+    padding: 30px;
+  }
+
+  .login-content {
+    margin: 45px auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .customer-login-left {
+    min-height: 360px;
+    padding: 35px 25px 25px;
+  }
+
+  .customer-login-right {
+    padding: 25px 20px;
+  }
+
+  .login-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .login-content h2 {
+    font-size: 26px;
+  }
+
+  .form-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+/* ================================
+   NOVACART TARGET DESIGN FIX
+================================ */
+
+/* Complete page */
+.customer-login-page {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* Left image panel */
+.customer-login-left {
+  min-width: 0;
+  min-height: 100vh;
+  padding: 76px 60px 38px;
+  border-radius: 10px 0 0 10px;
+}
+
+/* Right white panel */
+.customer-login-right {
+  min-width: 0;
+  min-height: 100vh;
+  padding: 28px 44px;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+/* Keep logo and account link at the top */
+.login-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Login section */
+.login-content {
+  width: 100%;
+  max-width: 430px;
+  margin: 48px 0 0 0;
+}
+
+/* Heading */
+.login-content h2 {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+/* Description */
+.welcome-text {
+  margin: 8px 0 20px;
+  font-size: 13px;
+}
+
+/* Inputs */
+.input-box {
+  width: 100%;
+  height: 36px;
+}
+
+/* Login button */
+.login-button {
+  width: 100%;
+  height: 38px;
+}
+
+/* Social buttons */
+.social-buttons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.social-buttons button {
+  width: 100%;
+}
+
+/* Signup card */
+.signup-card {
+  width: 100%;
+  min-height: 64px;
+}
+
+/* Desktop alignment */
+@media (min-width: 1101px) {
+  .login-content {
+    margin-left: 0;
+  }
+}
+
+/* Laptop/tablet alignment */
+@media (max-width: 1100px) and (min-width: 901px) {
+  .customer-login-right {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .login-content {
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .customer-login-page {
+    grid-template-columns: 1fr;
+    overflow: visible;
+  }
+
+  .customer-login-left {
+    min-height: 430px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .customer-login-right {
+    min-height: auto;
+    padding: 32px 24px;
+  }
+
+  .login-content {
+    max-width: 100%;
+    margin: 45px 0 0;
+  }
+}
+/* RIGHT PANEL TARGET POSITION */
+
+.customer-login-right {
+  padding-top: 28px;
+  padding-left: 44px;
+  padding-right: 44px;
+}
+
+/* Keep login content close to the logo */
+.login-content {
+  max-width: 430px;
+  margin-top: 48px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Make the form slightly wider */
+.login-form,
+.input-box,
+.login-button,
+.social-buttons,
+.signup-card {
+  width: 100%;
+}
+
+/* Keep the account link at the far right */
+.login-header p {
+  margin-left: auto;
+}
+/* OUTER PAGE SHAPE */
+
+.customer-login-page {
+  width: calc(100% - 8px);
+  min-height: calc(100vh - 8px);
+  margin: 4px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Make both panels follow the rounded outer shape */
+.customer-login-left {
+  border-radius: 10px 0 0 10px;
+}
+
+.customer-login-right {
+  border-radius: 0 10px 10px 0;
+}
+
+/* Keep the layout full height */
+.customer-login-left,
+.customer-login-right {
+  min-height: calc(100vh - 8px);
+}
+
+/* Mobile rounded corners */
+@media (max-width: 900px) {
+  .customer-login-page {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .customer-login-left {
+    border-radius: 0;
+  }
+
+  .customer-login-right {
+    border-radius: 0;
+  }
+
+  .customer-login-left,
+  .customer-login-right {
+    min-height: auto;
+  }
+}
