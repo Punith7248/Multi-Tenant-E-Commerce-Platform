@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Multi-Tenant E-Commerce SaaS Platform
 
 A multi-vendor e-commerce backend where independent vendors each run their own store, customers shop across every store from one account, and a super admin oversees the whole platform. Built with Node.js, Express, MongoDB/Mongoose, JWT auth, Stripe and Cloudinary.
@@ -122,3 +123,6 @@ Exact request/response shapes, curl examples, and what to build next: [day-4-aut
 - No rate limiting on `/auth/login` or `/auth/register` yet.
 - No email verification or password-reset flow yet.
 - This repo has no remote configured yet — push it to GitHub and set up branch protection on `main`/`dev` before the team starts branching (see [day-1-architecture.md §4.4](docs/day-1-architecture.md)).
+=======
+# Multi-Tenant-E-Commerce-Platform
+>>>>>>> 9c2eff6de8b253359fb6e009ccb842df98dbb0a1
