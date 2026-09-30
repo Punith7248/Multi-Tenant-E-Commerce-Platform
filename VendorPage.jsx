@@ -114,14 +114,6 @@ const VendorPage = () => {
       return product.icon;
     }
 
-    if (product.category === "Electronics") {
-      return "🎧";
-    }
-
-    if (product.category === "Fashion") {
-      return "👕";
-    }
-
     return "🛍️";
   };
 
@@ -386,6 +378,23 @@ const VendorPage = () => {
   const cancelDelete = () => {
     setDeleteProduct(null);
   };
+
+  const previewName =
+    productForm.name.trim() || "Product Name";
+
+  const previewPrice =
+    productForm.price
+      ? `₹${productForm.price}`
+      : "₹0";
+
+  const previewStock =
+    productForm.stock === ""
+      ? "0"
+      : productForm.stock;
+
+  const previewStatus = getStockStatus(
+    Number(previewStock)
+  );
 
   return (
     <div className="vendor-page">
@@ -709,6 +718,37 @@ const VendorPage = () => {
                 : "Enter the details of your new product."}
             </p>
 
+            <div className="product-preview">
+
+              <div className="preview-icon">
+                {productForm.icon}
+              </div>
+
+              <div className="preview-content">
+
+                <span className="preview-label">
+                  Live Preview
+                </span>
+
+                <h3>{previewName}</h3>
+
+                <div className="preview-details">
+                  <strong>{previewPrice}</strong>
+                  <span>
+                    {previewStock} units
+                  </span>
+                </div>
+
+                <span
+                  className={`stock-status ${previewStatus.className}`}
+                >
+                  {previewStatus.label}
+                </span>
+
+              </div>
+
+            </div>
+
             <form onSubmit={handleSubmit}>
 
               <label>
@@ -824,85 +864,4 @@ const VendorPage = () => {
 
               {errors.stock && (
                 <span className="form-error">
-                  {errors.stock}
-                </span>
-              )}
-
-              <div className="form-actions">
-
-                <button
-                  type="button"
-                  className="cancel-btn"
-                  onClick={closeForm}
-                >
-                  Cancel
-                </button>
-
-                <button
-                  type="submit"
-                  className="save-btn"
-                >
-                  {editingProduct
-                    ? "Save Changes"
-                    : "Add Product"}
-                </button>
-
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      )}
-
-      {deleteProduct && (
-
-        <div className="modal-overlay">
-
-          <div className="product-form">
-
-            <h2>
-              Delete Product?
-            </h2>
-
-            <p>
-              Are you sure you want to delete{" "}
-              <strong>
-                {deleteProduct.name}
-              </strong>
-              ?
-            </p>
-
-            <div className="form-actions">
-
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={cancelDelete}
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                className="delete-confirm-btn"
-                onClick={confirmDelete}
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      )}
-
-    </div>
-  );
-};
-
-export default VendorPage;
+   
