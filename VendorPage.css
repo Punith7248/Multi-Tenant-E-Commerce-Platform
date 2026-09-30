@@ -317,7 +317,7 @@
 .product-form input,
 .product-form select {
   padding: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 8px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
@@ -329,11 +329,19 @@
   border-color: #2563eb;
 }
 
+.form-error {
+  display: block;
+  margin: 0 0 14px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .cancel-btn,
@@ -431,4 +439,4 @@
   .product-form {
     padding: 22px;
   }
-  }
+}
