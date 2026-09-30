@@ -176,6 +176,19 @@ const VendorPage = () => {
       return 0;
     });
 
+  const hasActiveFilters =
+    search.trim() !== "" ||
+    category !== "All" ||
+    stockFilter !== "All" ||
+    sortBy !== "Default";
+
+  const clearFilters = () => {
+    setSearch("");
+    setCategory("All");
+    setStockFilter("All");
+    setSortBy("Default");
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -277,6 +290,7 @@ const VendorPage = () => {
       );
 
       setProducts(updatedProducts);
+
       setSuccessMessage(
         `${cleanName} updated successfully.`
       );
@@ -290,6 +304,7 @@ const VendorPage = () => {
       };
 
       setProducts([...products, newProduct]);
+
       setSuccessMessage(
         `${cleanName} added successfully.`
       );
@@ -350,6 +365,7 @@ const VendorPage = () => {
         {successMessage && (
           <div className="success-message">
             <span>✓</span>
+
             <p>{successMessage}</p>
 
             <button
@@ -606,9 +622,29 @@ const VendorPage = () => {
 
             ) : (
 
-              <p className="no-products">
-                No products found.
-              </p>
+              <div className="empty-state">
+
+                <div className="empty-state-icon">
+                  🔍
+                </div>
+
+                <h3>No Products Found</h3>
+
+                <p>
+                  We couldn't find any products
+                  matching your current filters.
+                </p>
+
+                {hasActiveFilters && (
+                  <button
+                    className="clear-filters-btn"
+                    onClick={clearFilters}
+                  >
+                    Clear Filters
+                  </button>
+                )}
+
+              </div>
 
             )}
 
