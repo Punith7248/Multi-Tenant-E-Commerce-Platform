@@ -8,6 +8,7 @@ import {
     HelpCircle,
     LogOut,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 function CustomerDashboard() {
     return (
@@ -402,6 +403,134 @@ function CustomerDashboard() {
                             </tbody>
 
                         </table>
+
+                    </div>
+
+                </div>
+                {/* Order Summary */}
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+
+                    {/* Spending Summary */}
+                    <div className="bg-white rounded-2xl border border-gray-100 p-6">
+
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-lg font-bold text-[#11112f]">
+                                    Order Summary
+                                </h2>
+
+                                <p className="text-sm text-gray-500 mt-1">
+                                    Your spending overview
+                                </p>
+                            </div>
+
+                            <select
+                                className="text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none"
+                                defaultValue="year"
+                            >
+                                <option value="year">This Year</option>
+                                <option value="month">This Month</option>
+                            </select>
+                        </div>
+
+                        {/* Simple Chart */}
+                        <div className="h-48 flex items-end gap-4 px-2">
+
+                            <div className="flex-1 bg-[#e9e5ff] rounded-t-lg h-[35%]"></div>
+
+                            <div className="flex-1 bg-[#e9e5ff] rounded-t-lg h-[55%]"></div>
+
+                            <div className="flex-1 bg-[#e9e5ff] rounded-t-lg h-[45%]"></div>
+
+                            <div className="flex-1 bg-[#e9e5ff] rounded-t-lg h-[70%]"></div>
+
+                            <div className="flex-1 bg-[#5744df] rounded-t-lg h-[85%]"></div>
+
+                            <div className="flex-1 bg-[#e9e5ff] rounded-t-lg h-[60%]"></div>
+
+                        </div>
+
+                        <div className="flex justify-between text-xs text-gray-400 mt-3 px-2">
+                            <span>Jan</span>
+                            <span>Feb</span>
+                            <span>Mar</span>
+                            <span>Apr</span>
+                            <span>May</span>
+                            <span>Jun</span>
+                        </div>
+
+                    </div>
+
+
+                    {/* Order Status */}
+                    <div className="bg-white rounded-2xl border border-gray-100 p-6">
+
+                        <div className="mb-6">
+                            <h2 className="text-lg font-bold text-[#11112f]">
+                                Order Status
+                            </h2>
+
+                            <p className="text-sm text-gray-500 mt-1">
+                                Current order overview
+                            </p>
+                        </div>
+
+                        <div className="space-y-5">
+
+                            {/* Delivered */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <span className="text-sm text-gray-600">
+                                        Delivered
+                                    </span>
+
+                                    <span className="text-sm font-semibold text-[#11112f]">
+                                        16
+                                    </span>
+                                </div>
+
+                                <div className="h-2 bg-gray-100 rounded-full">
+                                    <div className="h-2 w-[75%] bg-green-500 rounded-full"></div>
+                                </div>
+                            </div>
+
+
+                            {/* Processing */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <span className="text-sm text-gray-600">
+                                        Processing
+                                    </span>
+
+                                    <span className="text-sm font-semibold text-[#11112f]">
+                                        5
+                                    </span>
+                                </div>
+
+                                <div className="h-2 bg-gray-100 rounded-full">
+                                    <div className="h-2 w-[35%] bg-yellow-400 rounded-full"></div>
+                                </div>
+                            </div>
+
+
+                            {/* Shipped */}
+                            <div>
+                                <div className="flex justify-between mb-2">
+                                    <span className="text-sm text-gray-600">
+                                        Shipped
+                                    </span>
+
+                                    <span className="text-sm font-semibold text-[#11112f]">
+                                        3
+                                    </span>
+                                </div>
+
+                                <div className="h-2 bg-gray-100 rounded-full">
+                                    <div className="h-2 w-[25%] bg-blue-500 rounded-full"></div>
+                                </div>
+                            </div>
+
+                        </div>
 
                     </div>
 
