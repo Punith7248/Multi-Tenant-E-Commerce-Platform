@@ -10,6 +10,7 @@ const VendorPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const [products, setProducts] = useState([
     {
@@ -48,6 +49,26 @@ const VendorPage = () => {
     price: "",
     stock: "",
   });
+
+  const totalProducts = products.length;
+
+  const inStockProducts = products.filter(
+    (product) => product.stock > 10
+  ).length;
+
+  const lowStockProducts = products.filter(
+    (product) =>
+      product.stock > 0 && product.stock <= 10
+  ).length;
+
+  const outOfStockProducts = products.filter(
+    (product) => product.stock === 0
+  ).length;
+
+  const totalInventoryUnits = products.reduce(
+    (total, product) => total + product.stock,
+    0
+  );
 
   const getStockStatus = (stock) => {
     if (stock === 0) {
@@ -142,31 +163,51 @@ const VendorPage = () => {
       return 0;
     });
 
-  const totalProducts = products.length;
-
-  const inStockProducts = products.filter(
-    (product) => product.stock > 10
-  ).length;
-
-  const lowStockProducts = products.filter(
-    (product) =>
-      product.stock > 0 && product.stock <= 10
-  ).length;
-
-  const outOfStockProducts = products.filter(
-    (product) => product.stock === 0
-  ).length;
-
-  const totalInventoryUnits = products.reduce(
-    (total, product) => total + product.stock,
-    0
-  );
-
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
     setProductForm({
       ...productForm,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    const productName = productForm.name.trim();
+    const price = Number(productForm.price);
+    const stock = Number(productForm.stock);
+
+    if (!productName) {
+      newErrors.name = "Product name is required.";
+    } else if (productName.length < 3) {
+      newErrors.name =
+        "Product name must be at least 3 characters.";
+    }
+
+    if (!productForm.price) {
+      newErrors.price = "Price is required.";
+    } else if (price <= 0) {
+      newErrors.price =
+        "Price must be greater than ₹0.";
+    }
+
+    if (productForm.stock === "") {
+      newErrors.stock = "Stock quantity is required.";
+    } else if (stock < 0) {
+      newErrors.stock =
+        "Stock quantity cannot be negative.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const openAddForm = () => {
@@ -179,6 +220,7 @@ const VendorPage = () => {
       stock: "",
     });
 
+    setErrors({});
     setShowForm(true);
   };
 
@@ -194,49 +236,38 @@ const VendorPage = () => {
       stock: product.stock,
     });
 
+    setErrors({});
     setShowForm(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !productForm.name ||
-      !productForm.price ||
-      productForm.stock === ""
-    ) {
-      alert("Please fill all product details.");
+    if (!validateForm()) {
       return;
     }
 
-    if (Number(productForm.stock) < 0) {
-      alert("Stock cannot be negative.");
-      return;
-    }
-
-    if (Number(productForm.price) < 0) {
-      alert("Price cannot be negative.");
-      return;
-    }
+    const cleanName = productForm.name.trim();
 
     if (editingProduct) {
-      const updatedProducts = products.map((product) =>
-        product.id === editingProduct.id
-          ? {
-              ...product,
-              name: productForm.name,
-              category: productForm.category,
-              price: `₹${productForm.price}`,
-              stock: Number(productForm.stock),
-            }
-          : product
+      const updatedProducts = products.map(
+        (product) =>
+          product.id === editingProduct.id
+            ? {
+                ...product,
+                name: cleanName,
+                category: productForm.category,
+                price: `₹${productForm.price}`,
+                stock: Number(productForm.stock),
+              }
+            : product
       );
 
       setProducts(updatedProducts);
     } else {
       const newProduct = {
         id: Date.now(),
-        name: productForm.name,
+        name: cleanName,
         category: productForm.category,
         price: `₹${productForm.price}`,
         stock: Number(productForm.stock),
@@ -251,6 +282,7 @@ const VendorPage = () => {
   const closeForm = () => {
     setShowForm(false);
     setEditingProduct(null);
+    setErrors({});
 
     setProductForm({
       name: "",
@@ -581,6 +613,12 @@ const VendorPage = () => {
                 onChange={handleInputChange}
               />
 
+              {errors.name && (
+                <span className="form-error">
+                  {errors.name}
+                </span>
+              )}
+
               <label>
                 Category
               </label>
@@ -612,6 +650,12 @@ const VendorPage = () => {
                 onChange={handleInputChange}
               />
 
+              {errors.price && (
+                <span className="form-error">
+                  {errors.price}
+                </span>
+              )}
+
               <label>
                 Stock
               </label>
@@ -624,6 +668,12 @@ const VendorPage = () => {
                 value={productForm.stock}
                 onChange={handleInputChange}
               />
+
+              {errors.stock && (
+                <span className="form-error">
+                  {errors.stock}
+                </span>
+              )}
 
               <div className="form-actions">
 
