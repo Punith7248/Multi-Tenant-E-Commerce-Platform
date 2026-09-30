@@ -20,6 +20,7 @@ const VendorPage = () => {
       category: "Electronics",
       price: "₹2,499",
       stock: 25,
+      icon: "🎧",
     },
     {
       id: 2,
@@ -27,6 +28,7 @@ const VendorPage = () => {
       category: "Electronics",
       price: "₹3,999",
       stock: 8,
+      icon: "⌚",
     },
     {
       id: 3,
@@ -34,6 +36,7 @@ const VendorPage = () => {
       category: "Fashion",
       price: "₹799",
       stock: 40,
+      icon: "👕",
     },
     {
       id: 4,
@@ -41,6 +44,7 @@ const VendorPage = () => {
       category: "Fashion",
       price: "₹1,999",
       stock: 0,
+      icon: "👟",
     },
   ]);
 
@@ -49,6 +53,7 @@ const VendorPage = () => {
     category: "Electronics",
     price: "",
     stock: "",
+    icon: "🎧",
   });
 
   useEffect(() => {
@@ -104,12 +109,16 @@ const VendorPage = () => {
     };
   };
 
-  const getProductIcon = (category) => {
-    if (category === "Electronics") {
+  const getProductIcon = (product) => {
+    if (product.icon) {
+      return product.icon;
+    }
+
+    if (product.category === "Electronics") {
       return "🎧";
     }
 
-    if (category === "Fashion") {
+    if (product.category === "Fashion") {
       return "👕";
     }
 
@@ -203,6 +212,27 @@ const VendorPage = () => {
     });
   };
 
+  const handleCategoryChange = (e) => {
+    const newCategory = e.target.value;
+
+    let defaultIcon = "🎧";
+
+    if (newCategory === "Fashion") {
+      defaultIcon = "👕";
+    }
+
+    setProductForm({
+      ...productForm,
+      category: newCategory,
+      icon: defaultIcon,
+    });
+
+    setErrors({
+      ...errors,
+      category: "",
+    });
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -231,6 +261,10 @@ const VendorPage = () => {
         "Stock quantity cannot be negative.";
     }
 
+    if (!productForm.icon) {
+      newErrors.icon = "Please select a product icon.";
+    }
+
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -244,6 +278,7 @@ const VendorPage = () => {
       category: "Electronics",
       price: "",
       stock: "",
+      icon: "🎧",
     });
 
     setErrors({});
@@ -260,6 +295,7 @@ const VendorPage = () => {
         .replace("₹", "")
         .replace(",", ""),
       stock: product.stock,
+      icon: product.icon || "🛍️",
     });
 
     setErrors({});
@@ -285,6 +321,7 @@ const VendorPage = () => {
                 category: productForm.category,
                 price: `₹${productForm.price}`,
                 stock: Number(productForm.stock),
+                icon: productForm.icon,
               }
             : product
       );
@@ -301,6 +338,7 @@ const VendorPage = () => {
         category: productForm.category,
         price: `₹${productForm.price}`,
         stock: Number(productForm.stock),
+        icon: productForm.icon,
       };
 
       setProducts([...products, newProduct]);
@@ -323,6 +361,7 @@ const VendorPage = () => {
       category: "Electronics",
       price: "",
       stock: "",
+      icon: "🎧",
     });
   };
 
@@ -541,9 +580,7 @@ const VendorPage = () => {
                     <div className="product-card-top">
 
                       <div className="product-icon">
-                        {getProductIcon(
-                          product.category
-                        )}
+                        {getProductIcon(product)}
                       </div>
 
                       <span className="category-badge">
@@ -699,7 +736,7 @@ const VendorPage = () => {
               <select
                 name="category"
                 value={productForm.category}
-                onChange={handleInputChange}
+                onChange={handleCategoryChange}
               >
                 <option value="Electronics">
                   Electronics
@@ -709,6 +746,49 @@ const VendorPage = () => {
                   Fashion
                 </option>
               </select>
+
+              <label>
+                Product Icon
+              </label>
+
+              <div className="icon-selector">
+
+                {[
+                  "🎧",
+                  "⌚",
+                  "📱",
+                  "💻",
+                  "👕",
+                  "👟",
+                  "👜",
+                  "🧢",
+                ].map((icon) => (
+                  <button
+                    type="button"
+                    key={icon}
+                    className={`icon-option ${
+                      productForm.icon === icon
+                        ? "selected-icon"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setProductForm({
+                        ...productForm,
+                        icon,
+                      })
+                    }
+                  >
+                    {icon}
+                  </button>
+                ))}
+
+              </div>
+
+              {errors.icon && (
+                <span className="form-error">
+                  {errors.icon}
+                </span>
+              )}
 
               <label>
                 Price
