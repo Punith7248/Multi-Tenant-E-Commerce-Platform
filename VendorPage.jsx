@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./VendorPage.css";
 
 const VendorPage = () => {
@@ -11,6 +11,7 @@ const VendorPage = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [products, setProducts] = useState([
     {
@@ -49,6 +50,18 @@ const VendorPage = () => {
     price: "",
     stock: "",
   });
+
+  useEffect(() => {
+    if (!successMessage) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage]);
 
   const totalProducts = products.length;
 
@@ -264,6 +277,9 @@ const VendorPage = () => {
       );
 
       setProducts(updatedProducts);
+      setSuccessMessage(
+        `${cleanName} updated successfully.`
+      );
     } else {
       const newProduct = {
         id: Date.now(),
@@ -274,6 +290,9 @@ const VendorPage = () => {
       };
 
       setProducts([...products, newProduct]);
+      setSuccessMessage(
+        `${cleanName} added successfully.`
+      );
     }
 
     closeForm();
@@ -303,6 +322,10 @@ const VendorPage = () => {
       )
     );
 
+    setSuccessMessage(
+      `${deleteProduct.name} deleted successfully.`
+    );
+
     setDeleteProduct(null);
   };
 
@@ -323,6 +346,20 @@ const VendorPage = () => {
       </header>
 
       <main>
+
+        {successMessage && (
+          <div className="success-message">
+            <span>✓</span>
+            <p>{successMessage}</p>
+
+            <button
+              onClick={() => setSuccessMessage("")}
+              aria-label="Close message"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
         <section className="overview">
 
