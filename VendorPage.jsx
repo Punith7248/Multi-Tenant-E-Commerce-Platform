@@ -1,6 +1,41 @@
 import React, { useEffect, useState } from "react";
 import "./VendorPage.css";
 
+const defaultProducts = [
+  {
+    id: 1,
+    name: "Wireless Headphones",
+    category: "Electronics",
+    price: "₹2,499",
+    stock: 25,
+    icon: "🎧",
+  },
+  {
+    id: 2,
+    name: "Smart Watch",
+    category: "Electronics",
+    price: "₹3,999",
+    stock: 8,
+    icon: "⌚",
+  },
+  {
+    id: 3,
+    name: "Cotton T-Shirt",
+    category: "Fashion",
+    price: "₹799",
+    stock: 40,
+    icon: "👕",
+  },
+  {
+    id: 4,
+    name: "Running Shoes",
+    category: "Fashion",
+    price: "₹1,999",
+    stock: 0,
+    icon: "👟",
+  },
+];
+
 const VendorPage = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -10,43 +45,25 @@ const VendorPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
 
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      category: "Electronics",
-      price: "₹2,499",
-      stock: 25,
-      icon: "🎧",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      category: "Electronics",
-      price: "₹3,999",
-      stock: 8,
-      icon: "⌚",
-    },
-    {
-      id: 3,
-      name: "Cotton T-Shirt",
-      category: "Fashion",
-      price: "₹799",
-      stock: 40,
-      icon: "👕",
-    },
-    {
-      id: 4,
-      name: "Running Shoes",
-      category: "Fashion",
-      price: "₹1,999",
-      stock: 0,
-      icon: "👟",
-    },
-  ]);
+  const [products, setProducts] = useState(() => {
+    const savedProducts =
+      localStorage.getItem("novacart_vendor_products");
+
+    if (savedProducts) {
+      try {
+        return JSON.parse(savedProducts);
+      } catch {
+        return defaultProducts;
+      }
+    }
+
+    return defaultProducts;
+  });
 
   const [productForm, setProductForm] = useState({
     name: "",
@@ -55,6 +72,13 @@ const VendorPage = () => {
     stock: "",
     icon: "🎧",
   });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "novacart_vendor_products",
+      JSON.stringify(products)
+    );
+  }, [products]);
 
   useEffect(() => {
     if (!successMessage) {
@@ -110,11 +134,7 @@ const VendorPage = () => {
   };
 
   const getProductIcon = (product) => {
-    if (product.icon) {
-      return product.icon;
-    }
-
-    return "🛍️";
+    return product.icon || "🛍️";
   };
 
   const filteredProducts = products
@@ -207,21 +227,13 @@ const VendorPage = () => {
   const handleCategoryChange = (e) => {
     const newCategory = e.target.value;
 
-    let defaultIcon = "🎧";
-
-    if (newCategory === "Fashion") {
-      defaultIcon = "👕";
-    }
-
     setProductForm({
       ...productForm,
       category: newCategory,
-      icon: defaultIcon,
-    });
-
-    setErrors({
-      ...errors,
-      category: "",
+      icon:
+        newCategory === "Fashion"
+          ? "👕"
+          : "🎧",
     });
   };
 
@@ -247,14 +259,16 @@ const VendorPage = () => {
     }
 
     if (productForm.stock === "") {
-      newErrors.stock = "Stock quantity is required.";
+      newErrors.stock =
+        "Stock quantity is required.";
     } else if (stock < 0) {
       newErrors.stock =
         "Stock quantity cannot be negative.";
     }
 
     if (!productForm.icon) {
-      newErrors.icon = "Please select a product icon.";
+      newErrors.icon =
+        "Please select a product icon.";
     }
 
     setErrors(newErrors);
@@ -304,8 +318,8 @@ const VendorPage = () => {
     const cleanName = productForm.name.trim();
 
     if (editingProduct) {
-      const updatedProducts = products.map(
-        (product) =>
+      setProducts(
+        products.map((product) =>
           product.id === editingProduct.id
             ? {
                 ...product,
@@ -316,9 +330,8 @@ const VendorPage = () => {
                 icon: productForm.icon,
               }
             : product
+        )
       );
-
-      setProducts(updatedProducts);
 
       setSuccessMessage(
         `${cleanName} updated successfully.`
@@ -377,6 +390,16 @@ const VendorPage = () => {
 
   const cancelDelete = () => {
     setDeleteProduct(null);
+  };
+
+  const resetDashboard = () => {
+    setProducts(defaultProducts);
+    clearFilters();
+    setShowResetConfirm(false);
+
+    setSuccessMessage(
+      "Dashboard reset successfully."
+    );
   };
 
   const previewName =
@@ -467,12 +490,25 @@ const VendorPage = () => {
               </p>
             </div>
 
-            <button
-              className="add-product"
-              onClick={openAddForm}
-            >
-              + Add Product
-            </button>
+            <div className="header-actions">
+
+              <button
+                className="reset-dashboard-btn"
+                onClick={() =>
+                  setShowResetConfirm(true)
+                }
+              >
+                Reset
+              </button>
+
+              <button
+                className="add-product"
+                onClick={openAddForm}
+              >
+                + Add Product
+              </button>
+
+            </div>
 
           </div>
 
@@ -734,6 +770,7 @@ const VendorPage = () => {
 
                 <div className="preview-details">
                   <strong>{previewPrice}</strong>
+
                   <span>
                     {previewStock} units
                   </span>
@@ -824,12 +861,6 @@ const VendorPage = () => {
 
               </div>
 
-              {errors.icon && (
-                <span className="form-error">
-                  {errors.icon}
-                </span>
-              )}
-
               <label>
                 Price
               </label>
@@ -840,28 +871,4 @@ const VendorPage = () => {
                 placeholder="Enter price"
                 min="0"
                 value={productForm.price}
-                onChange={handleInputChange}
-              />
-
-              {errors.price && (
-                <span className="form-error">
-                  {errors.price}
-                </span>
-              )}
-
-              <label>
-                Stock
-              </label>
-
-              <input
-                type="number"
-                name="stock"
-                placeholder="Enter stock quantity"
-                min="0"
-                value={productForm.stock}
-                onChange={handleInputChange}
-              />
-
-              {errors.stock && (
-                <span className="form-error">
-   
+                onCh
