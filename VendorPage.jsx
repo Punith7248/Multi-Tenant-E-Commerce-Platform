@@ -70,6 +70,18 @@ const VendorPage = () => {
     };
   };
 
+  const getProductIcon = (category) => {
+    if (category === "Electronics") {
+      return "🎧";
+    }
+
+    if (category === "Fashion") {
+      return "👕";
+    }
+
+    return "🛍️";
+  };
+
   const filteredProducts = products
     .filter((product) => {
       const matchesSearch = product.name
@@ -82,7 +94,8 @@ const VendorPage = () => {
 
       const matchesStock =
         stockFilter === "All" ||
-        (stockFilter === "In Stock" && product.stock > 10) ||
+        (stockFilter === "In Stock" &&
+          product.stock > 10) ||
         (stockFilter === "Low Stock" &&
           product.stock > 0 &&
           product.stock <= 10) ||
@@ -128,6 +141,26 @@ const VendorPage = () => {
 
       return 0;
     });
+
+  const totalProducts = products.length;
+
+  const inStockProducts = products.filter(
+    (product) => product.stock > 10
+  ).length;
+
+  const lowStockProducts = products.filter(
+    (product) =>
+      product.stock > 0 && product.stock <= 10
+  ).length;
+
+  const outOfStockProducts = products.filter(
+    (product) => product.stock === 0
+  ).length;
+
+  const totalInventoryUnits = products.reduce(
+    (total, product) => total + product.stock,
+    0
+  );
 
   const handleInputChange = (e) => {
     setProductForm({
@@ -252,7 +285,8 @@ const VendorPage = () => {
         <h1>Vendor Dashboard</h1>
 
         <p>
-          Manage your store, products and orders from one place.
+          Manage your store, products and inventory
+          from one place.
         </p>
       </header>
 
@@ -262,17 +296,27 @@ const VendorPage = () => {
 
           <div className="stat-card">
             <h3>Total Products</h3>
-            <p>{products.length}</p>
+            <p>{totalProducts}</p>
           </div>
 
           <div className="stat-card">
-            <h3>Total Orders</h3>
-            <p>0</p>
+            <h3>In Stock</h3>
+            <p>{inStockProducts}</p>
           </div>
 
           <div className="stat-card">
-            <h3>Total Sales</h3>
-            <p>₹0</p>
+            <h3>Low Stock</h3>
+            <p>{lowStockProducts}</p>
+          </div>
+
+          <div className="stat-card">
+            <h3>Out of Stock</h3>
+            <p>{outOfStockProducts}</p>
+          </div>
+
+          <div className="stat-card">
+            <h3>Inventory Units</h3>
+            <p>{totalInventoryUnits}</p>
           </div>
 
         </section>
@@ -285,7 +329,8 @@ const VendorPage = () => {
               <h2>Product Management</h2>
 
               <p>
-                Search, filter and sort your store products.
+                Search, filter and sort your store
+                products.
               </p>
             </div>
 
@@ -388,6 +433,11 @@ const VendorPage = () => {
 
           </div>
 
+          <div className="product-count">
+            Showing {filteredProducts.length} of{" "}
+            {products.length} products
+          </div>
+
           <div className="product-grid">
 
             {filteredProducts.length > 0 ? (
@@ -403,15 +453,21 @@ const VendorPage = () => {
                     key={product.id}
                   >
 
-                    <div className="product-icon">
-                      🛍️
+                    <div className="product-card-top">
+
+                      <div className="product-icon">
+                        {getProductIcon(
+                          product.category
+                        )}
+                      </div>
+
+                      <span className="category-badge">
+                        {product.category}
+                      </span>
+
                     </div>
 
                     <h3>{product.name}</h3>
-
-                    <p className="category">
-                      {product.category}
-                    </p>
 
                     <div className="product-details">
                       <span>Price</span>
@@ -425,7 +481,7 @@ const VendorPage = () => {
                       <span>Stock</span>
 
                       <strong>
-                        {product.stock}
+                        {product.stock} units
                       </strong>
                     </div>
 
