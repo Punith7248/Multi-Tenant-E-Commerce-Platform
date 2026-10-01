@@ -11,6 +11,9 @@ import {
 import { useSelector } from "react-redux";
 
 function CustomerDashboard() {
+    const { totalOrders, activeOrders, wishlist, totalSpent } = useSelector(
+        (state) => state.dashboard
+    );
     return (
         <div className="min-h-screen bg-[#f7f8fc] flex">
 
@@ -174,7 +177,7 @@ function CustomerDashboard() {
                                 </p>
 
                                 <h3 className="text-2xl font-bold text-[#11112f] mt-2">
-                                    24
+                                    {totalOrders}
                                 </h3>
                             </div>
 
@@ -198,7 +201,7 @@ function CustomerDashboard() {
                                 </p>
 
                                 <h3 className="text-2xl font-bold text-[#11112f] mt-2">
-                                    3
+                                    {activeOrders}
                                 </h3>
                             </div>
 
@@ -222,7 +225,7 @@ function CustomerDashboard() {
                                 </p>
 
                                 <h3 className="text-2xl font-bold text-[#11112f] mt-2">
-                                    12
+                                    {wishlist}
                                 </h3>
                             </div>
 
@@ -246,7 +249,7 @@ function CustomerDashboard() {
                                 </p>
 
                                 <h3 className="text-2xl font-bold text-[#11112f] mt-2">
-                                    ₹12,450
+                                    ₹{totalSpent.toLocaleString("en-IN")}
                                 </h3>
                             </div>
 
