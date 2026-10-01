@@ -1,0 +1,11 @@
+NovaCart
+├── src/                    React frontend
+├── server/                 Express + MongoDB backend
+│   └── src/
+│       ├── models/         User, Tenant, Product, Order
+│       ├── controllers/
+│       ├── routes/
+│       ├── utils/          JWT + tenant helpers
+│       └── services/       Stripe, Cloudinary, Nodemailer helpers
+├── docker-compose.yml      MongoDB + backend + frontend
+└── Dockerfile
