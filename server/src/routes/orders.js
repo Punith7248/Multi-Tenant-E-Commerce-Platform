@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { auth, requireRole } from '../utils/auth.js';
+import { createOrder, mine, vendorOrders, updateOrderStatus, adminOrders } from '../controllers/orderController.js';
+const router = Router();
+router.post('/', auth, requireRole('customer'), createOrder);
+router.get('/mine', auth, requireRole('customer'), mine);
+router.get('/vendor', auth, requireRole('vendor'), vendorOrders);
+router.patch('/:id/status', auth, requireRole('vendor'), updateOrderStatus);
+router.get('/admin', auth, requireRole('super_admin'), adminOrders);
+export default router;
