@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { auth, requireRole } from '../utils/auth.js';
+import { overview, customers, vendors, approveVendor, suspendVendor, activateVendor, analytics } from '../controllers/adminController.js';
+const router = Router();
+router.use(auth, requireRole('super_admin'));
+router.get('/overview', overview);
+router.get('/customers', customers);
+router.get('/vendors', vendors);
+router.get('/analytics', analytics);
+router.patch('/vendors/:id/approve', approveVendor);
+router.patch('/vendors/:id/suspend', suspendVendor);
+router.patch('/vendors/:id/activate', activateVendor);
+export default router;

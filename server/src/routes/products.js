@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { auth, requireRole } from '../utils/auth.js';
+import { listPublicProducts, listVendorProducts, getProduct, createProduct, updateProduct, deleteProduct, stores } from '../controllers/productController.js';
+const router = Router();
+router.get('/public', listPublicProducts);
+router.get('/stores', stores);
+router.get('/', auth, requireRole('vendor'), listVendorProducts);
+router.get('/:id', auth, requireRole('vendor'), getProduct);
+router.post('/', auth, requireRole('vendor'), createProduct);
+router.put('/:id', auth, requireRole('vendor'), updateProduct);
+router.delete('/:id', auth, requireRole('vendor'), deleteProduct);
+export default router;

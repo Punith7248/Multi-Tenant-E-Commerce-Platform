@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { registerCustomer, registerVendor, login, adminLogin, me } from '../controllers/authController.js';
+import { auth } from '../utils/auth.js';
+const router = Router();
+router.post('/customer/signup', registerCustomer);
+router.post('/customer/login', login('customer'));
+router.post('/vendor/signup', registerVendor);
+router.post('/vendor/login', login('vendor'));
+router.post('/admin/login', adminLogin);
+router.get('/me', auth, me);
+export default router;
