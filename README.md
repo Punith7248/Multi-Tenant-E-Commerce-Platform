@@ -34,7 +34,7 @@ Built with Node.js, Express, MongoDB (Mongoose), JWT authentication, Stripe paym
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/novacart-backend.git
+git clone https://github.com/Punith7248/novacart-backend.git
 cd novacart-backend
 npm install
 cp .env.example .env
